@@ -43,15 +43,15 @@ jobs:
             ssh-add ~/.ssh/ ssh-praktikan47
             echo "Cek folder project"
             
-            if [ -d "${HOME}/senpro/<NTU>/modul02/senpro-github-action/" ]; then
+            if [ -d "${HOME}/senpro/492877/modul02/senpro-github-action/" ]; then
               echo "Repository sudah ada. Building..."
-              cd ~/senpro/<NTU>/modul02/senpro-github-action
+              cd ~/senpro/492877/modul02/senpro-github-action
               git restore .
               git pull origin main
             else
               echo "Repository belum di-clone. Cloning..."
-              mkdir -p ~/senpro/<NTU>/modul02
-              cd ~/senpro/<NTU>/modul02
+              mkdir -p ~/senpro/492877/modul02
+              cd ~/senpro/492877/modul02
               git clone https://github.com/danellazs/senpro-github-action.git
               cd ~/senpro/<NTU>/modul02/senpro-github-action
             fi
