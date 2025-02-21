@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Testing Build pre-Deploy
-      - uses: actions/setup-node@v2
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
@@ -23,41 +23,41 @@ jobs:
       - run: npm run build
 
   deploy:
-  needs: test-build
-  runs-on: ubuntu-latest
+    needs: test-build
+    runs-on: ubuntu-latest
 
-  strategy:
-    matrix:
-      node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
 
-  steps:
-    - name: Build app on VM
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-      script: |
-        eval "$(ssh-agent -s)"
-        ssh-add ~/.ssh/<<NAMA_KEY_DARI_ASPRAK>>
-        echo "Cek folder project"
-        
-        if [ -d "${HOME}/senpro/<NTU>/modul02/senpro-github-action/" ]; then
-          echo "Repository sudah ada. Building..."
-          cd ~/senpro/<NTU>/modul02/senpro-github-action
-          git restore .
-          git pull origin main
-        else
-          echo "Repository belum di-clone. Cloning..."
-          mkdir -p ~/senpro/<NTU>/modul02
-          cd ~/senpro/<NTU>/modul02
-          git clone <<LINK_REPOSITORY_FORK>>
-          cd ~/senpro/<NTU>/modul02/senpro-github-action
-        fi
+    steps:
+      - name: Build app on VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            eval "$(ssh-agent -s)"
+            ssh-add ~/.ssh/<<NAMA_KEY_DARI_ASPRAK>>
+            echo "Cek folder project"
+            
+            if [ -d "${HOME}/senpro/<NTU>/modul02/senpro-github-action/" ]; then
+              echo "Repository sudah ada. Building..."
+              cd ~/senpro/<NTU>/modul02/senpro-github-action
+              git restore .
+              git pull origin main
+            else
+              echo "Repository belum di-clone. Cloning..."
+              mkdir -p ~/senpro/<NTU>/modul02
+              cd ~/senpro/<NTU>/modul02
+              git clone <<LINK_REPOSITORY_FORK>>
+              cd ~/senpro/<NTU>/modul02/senpro-github-action
+            fi
 
-        echo "Install Package dan Build Project"
-        npm install
-        npm run build
+            echo "Install Package dan Build Project"
+            npm install
+            npm run build
 
 
